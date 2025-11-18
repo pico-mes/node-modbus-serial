@@ -253,15 +253,12 @@ function _readFC20(data, next) {
  * @param {Function} next the function to call next.
  */
 function _readFC22(data, next) {
-  const bytes = data.readUInt16BE(2);
-  const values = [];
+  const dataAddress = data.readUInt16BE(2);
+  const andMask = data.readUInt16BE(4);
+  const orMask = data.readUInt16BE(6);
 
-  for (let i = 0; i < bytes; i += 2) {
-    const reg = data.readUInt16BE(3 + i);
-    values.push(reg);
-  }
-
-  if (next) next(null, { data: values });
+  if (next)
+    next(null, { address: dataAddress, andMask: andMask, orMask: orMask });
 }
 
 /**
@@ -272,12 +269,15 @@ function _readFC22(data, next) {
  * @param {Function} next the function to call next.
  */
 function _readFC23(data, next) {
-  const dataAddress = data.readUInt16BE(2);
-  const andMask = data.readUInt16BE(4);
-  const orMask = data.readUInt16BE(6);
+  const bytes = data.readUInt16BE(2);
+  const values = [];
 
-  if (next)
-    next(null, { address: dataAddress, andMask: andMask, orMask: orMask });
+  for (let i = 0; i < bytes; i += 2) {
+    const reg = data.readUInt16BE(3 + i);
+    values.push(reg);
+  }
+
+  if (next) next(null, { data: values });
 }
 
 /**
