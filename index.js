@@ -1332,8 +1332,9 @@ class ModbusRTU extends EventEmitter {
       return;
     }
 
-    if (!Array.isArray(array) && !Buffer.isBuffer(array)) {
-      if (next) next(new Error("Parameter must be an array or buffer"));
+    if (!Array.isArray(valuesToWrite) && !Buffer.isBuffer(valuesToWrite)) {
+      if (next)
+        next(new Error("Parameter valuesToWrite must be an array or buffer"));
       return;
     }
 
