@@ -1310,6 +1310,11 @@ class ModbusRTU extends EventEmitter {
       return;
     }
 
+    if (!Array.isArray(array) && !Buffer.isBuffer(array)) {
+      if (next) next(new Error("Parameter must be an array or buffer"));
+      return;
+    }
+
     const code = 23;
 
     // Calculate byte count for write data (should be numWriteRegisters * 2)
@@ -1341,7 +1346,7 @@ class ModbusRTU extends EventEmitter {
     if (Buffer.isBuffer(valuesToWrite)) {
       valuesToWrite.copy(buf, 11);
     } else {
-      for (let i = 0; i < valuesToWrite.length; i++) {
+      for (let i = 0; i < numWriteRegisters; i++) {
         buf.writeUInt16BE(valuesToWrite[i], 11 + 2 * i);
       }
     }
