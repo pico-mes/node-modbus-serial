@@ -253,6 +253,25 @@ function _readFC20(data, next) {
  * @param {Function} next the function to call next.
  */
 function _readFC22(data, next) {
+  const bytes = data.readUInt16BE(2);
+  const values = [];
+
+  for (let i = 0; i < bytes; i += 2) {
+    const reg = data.readUInt16BE(3 + i);
+    values.push(reg);
+  }
+
+  if (next) next(null, { data: values });
+}
+
+/**
+ * Parse the data for a Modbus -
+ * Read Write Multiple Registers (FC=23)
+ *
+ * @param {Buffer} data the data buffer to parse.
+ * @param {Function} next the function to call next.
+ */
+function _readFC23(data, next) {
   const dataAddress = data.readUInt16BE(2);
   const andMask = data.readUInt16BE(4);
   const orMask = data.readUInt16BE(6);
@@ -613,6 +632,9 @@ function _onReceive(data) {
         break;
       case 22:
         _readFC22(data, next);
+        break;
+      case 23:
+        _readFC23(data, next);
         break;
       case 43:
         // read device identification
