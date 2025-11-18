@@ -269,7 +269,7 @@ function _readFC22(data, next) {
  * @param {Function} next the function to call next.
  */
 function _readFC23(data, next) {
-  const bytes = data.readUInt16BE(2);
+  const bytes = data.readInt8(2);
   const values = [];
 
   for (let i = 0; i < bytes; i += 2) {
